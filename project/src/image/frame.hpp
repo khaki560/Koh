@@ -1,5 +1,24 @@
 #ifndef FRAME_HPP
 #define FRAME_HPP
 
+#include <algorithm>
+#include <iostream>
+
+class Frame
+{
+private:
+	size_t mHeight;
+	size_t mWidth;
+	size_t mSize;
+	double* mFrame;
+public:
+	Frame(size_t height, size_t width, double *frame);
+	Frame(const Frame& frame);
+	~Frame();
+
+	size_t getSize() const;
+	double operator[] (int idx) const;
+	friend std::ostream& operator<<(std::ostream& os, const Frame& frame);
+};
 
 #endif //FRAME_HPP

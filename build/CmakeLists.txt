@@ -1,0 +1,93 @@
+cmake_minimum_required(VERSION 3.10)
+
+set(target_name koh)
+
+#set c++ standart to 17
+set (CMAKE_CXX_STANDARD 17)
+
+# set the project name
+project(${target_name})
+
+
+#build zlib and png libraries
+# include("${CMAKE_BINARY_DIR}/../libs/CmakeLists.txt")
+
+
+#############################
+#       Variables           #
+#############################
+set(ROOT_PATH "${CMAKE_BINARY_DIR}/..")
+
+set(PROJECT_ROOT "${ROOT_PATH}/project")
+set(PROJECT_SRC_ROOT "${ROOT_PATH}/project/src")
+set(IMAGE_INC "${PROJECT_SRC_ROOT}/image")
+set(PNG_INC "${PROJECT_SRC_ROOT}/png")
+set(KOH_INC "${PROJECT_SRC_ROOT}/koh")
+
+
+set(LIB_ROOT "${ROOT_PATH}/libs")
+set(LIB_BIN_ROOT "${ROOT_PATH}/libs/bin")
+set(LIB_PNG_INC "${LIB_BIN_ROOT}/lpng/include")
+set(LIB_PNG_LIB "${LIB_BIN_ROOT}/lpng/lib")
+set(LIB_ZLIB_INC "${LIB_BIN_ROOT}/zlibinclude")
+set(LIB_ZLIB_LIB "${LIB_BIN_ROOT}/zlib/lib")
+
+
+
+#############################
+#       Source files        #
+#############################
+set(
+    SOURCE_FILES
+    "${PROJECT_SRC_ROOT}/main.cpp"
+)
+
+
+#############################
+#         Headers           #
+#############################
+set(
+    INC
+    "${PROJECT_ROOT}"
+    "${IMAGE_INC}"
+    "${PNG_INC}"
+    "${KOH_INC}"
+    "${LIB_PNG_INC}"
+    "${LIB_ZLIB_INC}"
+)
+
+#############################
+#         libs              #
+#############################
+set(
+    LIBS
+    "${LIB_PNG_LIB}/libpng.a"
+    "${LIB_PNG_LIB}/libpng16.a"
+    "${LIB_ZLIB_LIB}/libzlibstatic.a"
+)
+
+
+# add the executable
+add_executable(
+    ${target_name}
+    ${SOURCE_FILES}
+)
+
+set_target_properties(
+    ${target_name}
+    PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/../output"
+)
+
+target_include_directories(
+    ${target_name}
+    PUBLIC
+    ${INC}
+)
+
+
+target_link_libraries(
+    ${target_name}
+    PUBLIC
+    ${LIBS}
+)

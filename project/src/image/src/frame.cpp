@@ -1,6 +1,12 @@
 #include "frame.hpp"
-
 #include <iostream>
+
+
+Frame::Frame()
+:mHeight(0), mWidth(0), mSize(0), mFrame(nullptr)
+{
+
+}
 
 Frame::Frame(size_t height, size_t width, double *frame)
 :mHeight(height), mWidth(width)
@@ -16,8 +22,28 @@ Frame::Frame(const Frame& frame)
 	mWidth = frame.mWidth;
 	mSize = frame.mSize;
 	mFrame = new double[mSize];
-
 	std::copy(frame.mFrame, frame.mFrame+mSize, mFrame);
+}
+
+Frame::Frame(Frame&& frame)
+:Frame()
+{
+	swap(*this, frame);
+}
+
+Frame Frame::operator=(Frame frame)
+{
+	swap(*this, frame);
+}
+
+void swap(Frame& first, Frame& second)
+{
+	using std::swap;
+
+	swap(first.mHeight, second.mHeight);
+	swap(first.mWidth, second.mWidth);
+	swap(first.mSize, second.mSize);
+	swap(first.mFrame, second.mFrame);
 }
 
 Frame::~Frame()

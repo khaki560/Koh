@@ -18,12 +18,17 @@ private:
 	std::vector<std::vector<Frame>> mFrames;
 
 
+	FrameImage();
 public:
 	FrameImage(Vector2d<size_t> imageSize, Vector2d<size_t> frameSize, double* image);
 
 	FrameImage(const FrameImage& image);
 	FrameImage(FrameImage&& image);
 	~FrameImage();
+
+
+	FrameImage operator=(FrameImage iamge);
+	friend void swap(FrameImage& first, FrameImage& second);
 
 	Vector2d<size_t> getFrameSize();
 	Vector2d<size_t> getNumberOfFrames();

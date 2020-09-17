@@ -12,9 +12,14 @@ private:
 	size_t mSize;
 	double* mFrame;
 public:
+	Frame();
 	Frame(size_t height, size_t width, double *frame);
 	Frame(const Frame& frame);
+	Frame(Frame&& frame);
 	~Frame();
+
+	Frame operator=(Frame frame);
+	friend void swap(Frame& first, Frame& second);
 
 	size_t getSize() const;
 	double operator[] (int idx) const;

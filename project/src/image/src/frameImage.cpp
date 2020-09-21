@@ -5,6 +5,8 @@
 
 #include "image.hpp"
 
+#include <stdio.h>
+#include <string.h>
 
 FrameImage::FrameImage()
 :Image(), mFrameHeight(0), mFrameWidth(0), mFrameSize(0), mNumberOfFramesX(0), mNumberOfFramesY(0)
@@ -79,6 +81,62 @@ FrameImage::FrameImage(Vector2d<size_t> imageSize, Vector2d<size_t> frameSize, d
 	// }
 }
 
+
+FrameImage::FrameImage(std::vector<std::vector<Frame>> frames)
+:mFrames(frames)
+{
+	auto frame = frames[0][0];
+	mNumberOfFramesY = frames.size();
+	mNumberOfFramesX = frames[0].size();
+	mFrameHeight = frame.getHeight();
+	mFrameWidth = frame.getWidth();
+	mFrameSize = frame.getSize();
+
+	std::cout << "mNumberOfFramesY:" << mNumberOfFramesY << std::endl;
+	std::cout << "mNumberOfFramesX:" << mNumberOfFramesX << std::endl;
+	std::cout << "mFrameHeight:" << mFrameHeight << std::endl;
+	std::cout << "mFrameWidth:" << mFrameWidth << std::endl;
+	std::cout << "mFrameSize:" << mFrameSize << std::endl;
+
+
+	mImageHeight = mNumberOfFramesY * mFrameHeight;
+	mImageWidth = mNumberOfFramesX * mFrameWidth;
+	mImageSize = mImageHeight * mImageWidth;
+
+	mImage = new double[mImageSize];
+	mImageRows = new double*[mImageHeight];
+
+
+	for(int y = 0; y < mImageHeight; y++)
+	{
+		mImageRows[y] = &mImage[y*mImageWidth];
+	}
+
+	memset(mImage, -1, mImageSize * sizeof(double));
+
+
+	// double tmp[mNumberOfFramesX*mNumberOfFramesY][mFrameHeight][mFrameWidth];
+
+	for(int i = 0; i < mImageSize; i++)
+	{
+		int y = i / mImageWidth;
+		int x = i % mImageWidth;
+
+		int frameNumber = (y / mFrameHeight) * mNumberOfFramesX + x / mFrameWidth;
+		int frameY = (i / mImageWidth) %  mFrameHeight;
+		int frameX = i % mFrameWidth;
+
+		// std::cout << frameNumber << ", " << frameY << "," << frameX << " = " << y << "," << x << std::endl;
+		std::cout << y << "," << x << " == " << frameNumber << ", " << frameY << "," << frameX << std::endl;
+		mImageRows[y][x] = mFrames[frameNumber][frameY][frameX];
+	}
+
+
+
+	//
+	// }
+}
+
 FrameImage::FrameImage(const FrameImage& image)
 :Image(image)
 {
@@ -119,12 +177,7 @@ void swap(FrameImage& first, FrameImage& second)
 	swap(first.mNumberOfFramesX, second.mNumberOfFramesX);
 	swap(first.mNumberOfFramesY, second.mNumberOfFramesY);
 
-	for(int i = 0; i < first.mNumberOfFramesY; i++)
-	{
-		std::vector<Frame> tmp;
-		tmp.swap(second.mFrames[i]);
-		first.mFrames.push_back(tmp);
-	}
+	first.mFrames.swap(second.mFrames);
 }
 
 FrameImage::~FrameImage()
@@ -142,6 +195,10 @@ Vector2d<size_t> FrameImage::getNumberOfFrames()
 	return Vector2d<size_t>(mNumberOfFramesY, mNumberOfFramesX);
 }
 
+std::vector<std::vector<Frame>>FrameImage::getAllFrames()
+{
+	return mFrames;
+}
 
 Frame FrameImage::getFrame(int y, int x)
 {
@@ -152,6 +209,7 @@ Frame FrameImage::getFrame(int y, int x)
 
 void print(FrameImage* image)
 {
+	// auto h = image->getNumberOfFrames();
 	auto h = image->getNumberOfFrames().el1;
 	auto w = image->getNumberOfFrames().el2;
 	std::cout << "h = " <<  h << ", w = " << w << std::endl;
@@ -169,13 +227,19 @@ int main()
 {
 	double a[16] = {0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3};
 	Vector2d<size_t> b(4,4);
-	Vector2d<size_t> b1(1,4);
+	Vector2d<size_t> b1(2,2);
 
 	std::cout << "======================= C ===================" << std::endl;
 	FrameImage c(b, b1, a);
 	std::cout << "C:" << std::endl;
 	c.printImage();
 	print(&c);
+
+
+	FrameImage d(c.getAllFrames());
+	std::cout << "D:" << std::endl;
+	// print(&d);
+	// d.printImage();
 
 	// std::cout << "======================= d ===================" << std::endl;
 	// FrameImage d(c);

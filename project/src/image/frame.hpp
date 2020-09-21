@@ -21,7 +21,10 @@ public:
 	Frame operator=(Frame frame);
 	friend void swap(Frame& first, Frame& second);
 
+
 	size_t getSize() const;
+	size_t getHeight() const;
+	size_t getWidth() const;
 	double operator[] (int idx) const;
 	friend std::ostream& operator<<(std::ostream& os, const Frame& frame);
 };

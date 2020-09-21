@@ -21,6 +21,8 @@ private:
 	FrameImage();
 public:
 	FrameImage(Vector2d<size_t> imageSize, Vector2d<size_t> frameSize, double* image);
+	FrameImage(std::vector<std::vector<Frame>> frames);
+
 
 	FrameImage(const FrameImage& image);
 	FrameImage(FrameImage&& image);
@@ -32,6 +34,8 @@ public:
 
 	Vector2d<size_t> getFrameSize();
 	Vector2d<size_t> getNumberOfFrames();
+
+	std::vector<std::vector<Frame>> getAllFrames();
 	Frame getFrame(int y, int x);
 };
 

@@ -46,6 +46,15 @@ void swap(Frame& first, Frame& second)
 	swap(first.mFrame, second.mFrame);
 }
 
+size_t Frame::getHeight() const
+{
+	return mHeight;
+}
+size_t Frame::getWidth() const
+{
+	return mWidth;
+}
+
 Frame::~Frame()
 {
 	delete[] mFrame;

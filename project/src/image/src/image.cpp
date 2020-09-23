@@ -1,19 +1,14 @@
-#include <algorithm>
-#include <iostream>
-
 #include "image.hpp"
 
+#include <algorithm>
 
-#include <iostream>
 Image::Image()
 :mImageHeight(0), mImageWidth(0), mImage(nullptr), mImageRows(nullptr)
 {
-	std::cout << "Image - empty" << std::endl;
 }
 
 Image::Image(Vector2d<size_t> imageSize, double* image)
 {
-	std::cout << "Image - 2args" << std::endl;
 	mImageHeight = imageSize.el1;
 	mImageWidth = imageSize.el2;
 
@@ -32,7 +27,6 @@ Image::Image(Vector2d<size_t> imageSize, double* image)
 
 Image::Image(const Image& image)
 {
-	std::cout << "Image - copy" << std::endl;
 	mImageHeight = image.mImageHeight;
 	mImageWidth = image.mImageWidth;
 	mImageSize = mImageHeight * mImageWidth;
@@ -50,7 +44,6 @@ Image::Image(const Image& image)
 Image::Image(Image&& image)
 :Image()
 {
-	std::cout << "Image - move" << std::endl;
 	swap(*this, image);
 }
 
@@ -62,7 +55,6 @@ Image::~Image()
 
 Image Image::operator=(Image image)
 {
-	std::cout << "Image assigment" << std::endl;
 	return Image(image);
 }
 

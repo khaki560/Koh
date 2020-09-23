@@ -35,6 +35,7 @@ Frame::Frame(Frame&& frame)
 Frame Frame::operator=(Frame frame)
 {
 	swap(*this, frame);
+	return *this;
 }
 
 void swap(Frame& first, Frame& second)

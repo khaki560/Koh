@@ -103,33 +103,66 @@ FrameImage::FrameImage(std::vector<std::vector<Frame>> frames)
 	mImageWidth = mNumberOfFramesX * mFrameWidth;
 	mImageSize = mImageHeight * mImageWidth;
 
+
+	std::cout << "mImageHeight:" << mImageHeight << std::endl;
+	std::cout << "mImageWidth:" << mImageWidth << std::endl;
+	std::cout << "mImageSize:" << mFrameSize << std::endl;
+
 	mImage = new double[mImageSize];
+	memset(mImage, -1, mImageSize * sizeof(double));
 	mImageRows = new double*[mImageHeight];
-
-
 	for(int y = 0; y < mImageHeight; y++)
 	{
 		mImageRows[y] = &mImage[y*mImageWidth];
 	}
 
-	memset(mImage, -1, mImageSize * sizeof(double));
-
-
-	// double tmp[mNumberOfFramesX*mNumberOfFramesY][mFrameHeight][mFrameWidth];
-
-	for(int i = 0; i < mImageSize; i++)
+	int frameY = -1;
+	int frameX = -1;
+	for(int y = 0; y < mImageHeight; y++)
 	{
-		int y = i / mImageWidth;
-		int x = i % mImageWidth;
+		for(int x = 0; x < mImageWidth; x++)
+		{
+			if(mNumberOfFramesX > mNumberOfFramesY)
+			{
+				frameY = y / mNumberOfFramesY;
+				frameX = x % mNumberOfFramesX;
+			}
+			else //if(mNumberOfFramesX > mNumberOfFramesY))
+			{
+				frameY = y / mNumberOfFramesY;
+				frameX = x / mNumberOfFramesX;
+			}
 
-		int frameNumber = (y / mFrameHeight) * mNumberOfFramesX + x / mFrameWidth;
-		int frameY = (i / mImageWidth) %  mFrameHeight;
-		int frameX = i % mFrameWidth;
 
-		// std::cout << frameNumber << ", " << frameY << "," << frameX << " = " << y << "," << x << std::endl;
-		std::cout << y << "," << x << " == " << frameNumber << ", " << frameY << "," << frameX << std::endl;
-		mImageRows[y][x] = mFrames[frameNumber][frameY][frameX];
+			std::cout << y << ", " << x << " == " << frameY << ", " << frameX << ", " << std::flush;
+			std::cout << mFrames[frameY][frameX].nextI() << std::endl;
+			mImageRows[y][x] =  mFrames[frameY][frameX].next();
+		}
 	}
+
+
+
+
+
+
+
+
+
+
+
+	// for(int i = 0; i < mImageSize; i++)
+	// {
+	// 	int y = i / mImageWidth;
+	// 	int x = i % mImageWidth;
+
+	// 	int frameNumber = (y / mFrameHeight) * mNumberOfFramesX + x / mFrameWidth;
+	// 	int frameY = (i / mImageWidth) %  mFrameHeight;
+	// 	int frameX = i % mFrameWidth;
+
+	// 	// std::cout << frameNumber << ", " << frameY << "," << frameX << " = " << y << "," << x << std::endl;
+	// 	std::cout << y << "," << x << " == " << frameNumber << ", " << frameY << "," << frameX << std::endl;
+	// 	mImageRows[y][x] = mFrames[frameNumber][frameY][frameX];
+	// }
 
 
 
@@ -227,7 +260,7 @@ int main()
 {
 	double a[16] = {0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3};
 	Vector2d<size_t> b(4,4);
-	Vector2d<size_t> b1(2,2);
+	Vector2d<size_t> b1(4,1);
 
 	std::cout << "======================= C ===================" << std::endl;
 	FrameImage c(b, b1, a);
@@ -238,8 +271,8 @@ int main()
 
 	FrameImage d(c.getAllFrames());
 	std::cout << "D:" << std::endl;
-	// print(&d);
-	// d.printImage();
+	print(&d);
+	d.printImage();
 
 	// std::cout << "======================= d ===================" << std::endl;
 	// FrameImage d(c);

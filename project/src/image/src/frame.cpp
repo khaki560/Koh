@@ -3,13 +3,13 @@
 
 
 Frame::Frame()
-:mHeight(0), mWidth(0), mSize(0), mFrame(nullptr)
+:mHeight(0), mWidth(0), mSize(0), mFrame(nullptr), mCurrentIndex(0)
 {
 
 }
 
 Frame::Frame(size_t height, size_t width, double *frame)
-:mHeight(height), mWidth(width)
+:mHeight(height), mWidth(width), mCurrentIndex(0)
 {
 	mSize = mHeight*mWidth;
 	mFrame = new double[mSize];
@@ -22,6 +22,7 @@ Frame::Frame(const Frame& frame)
 	mWidth = frame.mWidth;
 	mSize = frame.mSize;
 	mFrame = new double[mSize];
+	mCurrentIndex = frame.mCurrentIndex;
 	std::copy(frame.mFrame, frame.mFrame+mSize, mFrame);
 }
 
@@ -44,6 +45,7 @@ void swap(Frame& first, Frame& second)
 	swap(first.mWidth, second.mWidth);
 	swap(first.mSize, second.mSize);
 	swap(first.mFrame, second.mFrame);
+	swap(first.mCurrentIndex, second.mCurrentIndex);
 }
 
 size_t Frame::getHeight() const
@@ -78,4 +80,23 @@ std::ostream& operator<<(std::ostream& os, const Frame& frame)
 		os << frame[i] << ", ";
 	}
 	return os;
+}
+
+double Frame::next()
+{
+	int i = mCurrentIndex;
+	if(++mCurrentIndex >= mSize)
+	{
+		mCurrentIndex = 0;
+	}
+	return mFrame[i];
+}
+
+int Frame::nextI()
+{
+	return mCurrentIndex;
+}
+void  Frame::reset()
+{
+	mCurrentIndex = 0;
 }

@@ -11,6 +11,7 @@ private:
 	size_t mWidth;
 	size_t mSize;
 	double* mFrame;
+	int mCurrentIndex;
 public:
 	Frame();
 	Frame(size_t height, size_t width, double *frame);
@@ -27,6 +28,9 @@ public:
 	size_t getWidth() const;
 	double operator[] (int idx) const;
 	friend std::ostream& operator<<(std::ostream& os, const Frame& frame);
+	double next();
+	int nextI();
+	void reset();
 };
 
 #endif //FRAME_HPP

@@ -73,6 +73,11 @@ double* Image::getImage()
 	return mImage;
 }
 
+double* Image::getImageRow(int rowNumber)
+{
+	return mImageRows[rowNumber];
+}
+
 Vector2d<size_t> Image::getSize()
 {
 	return Vector2d<size_t>(mImageHeight, mImageWidth);

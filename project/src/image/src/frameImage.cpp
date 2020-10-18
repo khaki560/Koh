@@ -31,16 +31,18 @@ FrameImage::FrameImage(Vector2d<size_t> imageSize, Vector2d<size_t> frameSize, d
 	mNumberOfFramesX = mImageWidth / mFrameWidth;
 
 
-	for(int i = 0; i < mNumberOfFramesY; i++)
+	for(unsigned int i = 0; i < mNumberOfFramesY; i++)
 	{
 		std::vector<Frame> tmp;
 		mFrames.push_back(tmp);
 	}
 
+	const size_t d1 = mNumberOfFramesX*mNumberOfFramesY;
+	const size_t d2 = mFrameHeight;
+	const size_t d3 = mFrameWidth;
+	double *tmp = new double[d1 * d2 * d3];
 
-	double tmp[mNumberOfFramesX*mNumberOfFramesY][mFrameHeight][mFrameWidth];
-
-	for(int i = 0; i < mImageSize; i++)
+	for(unsigned int i = 0; i < mImageSize; i++)
 	{
 		int y = i / mImageWidth;
 		int x = i % mImageWidth;
@@ -50,12 +52,12 @@ FrameImage::FrameImage(Vector2d<size_t> imageSize, Vector2d<size_t> frameSize, d
 		int frameX = i % mFrameWidth;
 
 
-		tmp[frameNumber][frameY][frameX] = mImageRows[y][x];
+		tmp[frameNumber + d2 * (frameY + d3 * frameX)] = mImageRows[y][x];
 	}
 
-	for(int i = 0; i < mNumberOfFramesX*mNumberOfFramesY; i++)
+	for(unsigned int i = 0; i < mNumberOfFramesX*mNumberOfFramesY; i++)
 	{
-		auto frameTemp = Frame(mFrameHeight, mFrameWidth, tmp[i][0]);
+		auto frameTemp = Frame(mFrameHeight, mFrameWidth, &tmp[i]);
 		mFrames[i/mNumberOfFramesX].push_back(frameTemp);
 	}
 }
@@ -76,7 +78,6 @@ FrameImage::FrameImage(std::vector<std::vector<Frame>> frames)
 	mImageSize = mImageHeight * mImageWidth;
 
 	mImage = new double[mImageSize];
-	// memset(mImage, -1, mImageSize * sizeof(double));
 	mImageRows = new double*[mImageHeight];
 	for(int y = 0; y < mImageHeight; y++)
 	{

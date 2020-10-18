@@ -29,6 +29,7 @@ public:
 
 	Vector2d<size_t> getSize();
 	double* getImage();
+	double* getImageRow(int rowNumber);
 
 
 	void printImage();

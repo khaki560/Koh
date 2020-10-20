@@ -8,6 +8,8 @@ struct Vector2d
 {
 	T el1;
 	T el2;
+
+	Vector2d(): el1(0), el2(0) {}
 	Vector2d(T _el1, T _el2): el1(_el1), el2(_el2) {}
 };
 

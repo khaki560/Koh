@@ -1,0 +1,2 @@
+cmake . -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=release -DCMAKE_C_COMPILER_WORKS=1 -DCMAKE_CXX_COMPILER_WORKS=1 -DCMAKE_C_COMPILER="C:/MinGW/bin/gcc.exe" -DCMAKE_CXX_COMPILER="C:/MinGW/bin/g++.exe" -DCMAKE_MAKE_PROGRAM="C:/MinGW/bin/mingw32-make.exe"
+

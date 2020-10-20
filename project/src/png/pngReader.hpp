@@ -24,9 +24,10 @@ private:
 	FrameImage createImage(Vector2d<size_t> frameSize, int mode);
 	void convert(PngMode mode);
 	unsigned int getPixelSize();
+
 public:
-	void open(std::string path);
-	void open(const char path[]);
+	bool open(std::string path);
+	bool open(const char path[]);
 
 	FrameImage getImage(Vector2d<size_t> frameSize, PngMode mode);
 	FrameImage getImage(Vector2d<size_t> frameSize);

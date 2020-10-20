@@ -1,7 +1,8 @@
 #include "pngReader.hpp"
 
-void PngReader::open(const char path[])
+bool PngReader::open(const char path[])
 {
+    bool success = false;
     mPFile = fopen (path, "rb");
     if(mPFile != NULL)
     {
@@ -16,6 +17,7 @@ void PngReader::open(const char path[])
                 mRows = png_get_rows(mPngPtr, mInfoPtr);
                 png_get_IHDR(mPngPtr, mInfoPtr, &mHeight, &mWidth, &mBitDepth, &mColorType, &mInterlaceType, &mCompressionType, &mFilterMethod);
                 fclose(mPFile);
+                success = true;
             }
             else
             {
@@ -23,11 +25,12 @@ void PngReader::open(const char path[])
             }
         }
     }
+    return success;
 }
 
-void PngReader::open(std::string path)
+bool PngReader::open(std::string path)
 {
-    open(path.c_str());
+    return open(path.c_str());
 }
 
 

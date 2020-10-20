@@ -10,20 +10,14 @@
 #include "utils.hpp"
 
 
-
-struct KohParameters
-{
-	Vector2d<unsigned int> size;
-	double learningRate;
-	unsigned int epochs;
-};
-
 struct Parameters
 {
 	std::string path;
 	std::string outPath;
-	KohParameters koh;
-	Vector2d<unsigned int> frameSize;
+	Vector2d<size_t> size;
+	double learningRate;
+	unsigned int epochs;
+	Vector2d<size_t> frameSize;
 	unsigned int numberOftrainSamples; // or percentage
 };
 
@@ -38,22 +32,39 @@ int main(int args, char* argv[])
 	// Parse arguments
 	// Parameters params = parseArgs(args, argv);
 
-	// // Read Png
-	// PngMode mode = PngMode::GREY;
-	// PngReader pngReader = PngReader();
-	// pngReader.open(params.path, mode);
-	// Image startImage = pngReader.getImage(params.frameSize);
+	Parameters params;
 
-	// // training Kohonen network
-	// auto numberOfInputs = params.frameSize.x + params.frameSize.y;
-	// Koh koh = Koh(params.koh.size, params.koh.learningRate, params.koh.epochs, numberOfInputs);
-	// koh.train(startImage, params.numberOftrainSamples);
-	// Image newImage = koh.convert(startImage);
+	params.path = "..\\images\\lena.png";
+	params.outPath = "a.png";
+	Vector2d<size_t> b(4,4);
+	// params.frameSize = a;
+
+	// Read Png
+	PngMode mode = PngMode::GREY;
+	PngReader pngReader = PngReader();
+	// std::cout << (pngReader.open(params.path) ? "hura" : "nie dziala") << std::endl;
+	if(pngReader.open(params.path))
+	{
+		FrameImage startImage = pngReader.getImage(b);
+		std::cout << startImage.getImage()[0];
+
+		// // training Kohonen network
+		// auto numberOfInputs = params.frameSize.x + params.frameSize.y;
+		// Koh koh = Koh(params.koh.size, params.koh.learningRate, params.koh.epochs, numberOfInputs);
+		// koh.train(startImage, params.numberOftrainSamples);
+		// Image newImage = koh.convert(startImage);
+		FrameImage newImage = std::move(startImage);
 
 
-	// //saving png created by kohonen
-	// PngWriter pngWriter = PngWriter();
-	// pngWriter.save(params.outPath, newImage, mode);
+		// //saving png created by kohonen
+		PngWriter pngWriter = PngWriter();
+		pngWriter.save(params.outPath, newImage, mode);
+	}
+	else
+	{
+		std::cout << "Coudn't open " << params.path;
+	}
+
 
 	return 0;
 }

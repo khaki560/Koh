@@ -40,6 +40,11 @@ set(LIB_ZLIB_LIB "${LIB_BIN_ROOT}/zlib/lib")
 set(
     SOURCE_FILES
     "${PROJECT_SRC_ROOT}/main.cpp"
+    "${IMAGE_INC}/src/frame.cpp"
+    "${IMAGE_INC}/src/frameImage.cpp"
+    "${IMAGE_INC}/src/image.cpp"
+    "${PNG_INC}/src/pngReader.cpp"
+    "${PNG_INC}/src/pngWriter.cpp"
 )
 
 
@@ -62,7 +67,7 @@ set(
 set(
     LIBS
     "${LIB_PNG_LIB}/libpng.a"
-    "${LIB_PNG_LIB}/libpng16.a"
+    # "${LIB_PNG_LIB}/libpng16.a"
     "${LIB_ZLIB_LIB}/libzlibstatic.a"
 )
 
